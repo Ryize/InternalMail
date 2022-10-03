@@ -9,6 +9,8 @@ app = FastAPI()
 
 Base.metadata.create_all(bind=engine)
 
+SITE_URL = 'internalmail.dev'
+
 router_version_1 = APIRouter(prefix='/v1')
 router_version_1.include_router(user)
 router_version_1.include_router(mail)

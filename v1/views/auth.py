@@ -1,3 +1,4 @@
+import main
 from core.models.auth.models import Users
 from core.models.service import get_db, get_auth_code
 from core.schemas.auth_schema import RegisterResponse, Register
@@ -19,7 +20,8 @@ async def register(data: Register):
             description="Пользователь с таким логином уже зарегистрирован!",
         )
     code = get_auth_code()
-    Users.create(login=data.login, password=data.password, code=code)
+    email = f'{data.login}@{main.SITE_URL}'
+    Users.create(login=data.login, password=data.password, code=code, email=email)
     return RegisterResponse(
         success=True,
         description="Используйте полученный код для входа на платформу",
