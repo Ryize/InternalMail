@@ -13,3 +13,15 @@ class MailMessage(Base, BaseMixin):
     sender = Column(Integer, ForeignKey('users.id'), nullable=False)
     recipient = Column(Integer, ForeignKey('users.id'), nullable=False)
     message = Column(String)
+
+    def to_json(self):
+        sender = self.db.query(Users).filter(Users.id == self.sender).first()
+        recipient = self.db.query(Users).filter(Users.id == self.recipient).first()
+        if not (sender and recipient):
+            raise ValueError('Отправитель или получатель не найдены!')
+        return {
+            'id': self.id,
+            'sender': sender.email,
+            'recipient': recipient.email,
+            'message': self.message,
+        }
